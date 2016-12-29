@@ -1,4 +1,5 @@
 const net = require('net');
+const PORT = 8080;
 
 //Start a server
 var server = net.createServer((socket) => {
@@ -7,8 +8,10 @@ var server = net.createServer((socket) => {
 
   });
 
+  socket.end();
+
 });
 
-server.listen(8080, '0.0.0.0', () => {
+server.listen(8080, 'localhost', () => {
   console.log('opened server on', server.address());
 });
