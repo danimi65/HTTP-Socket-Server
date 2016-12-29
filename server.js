@@ -1,6 +1,7 @@
 const net = require('net');
 const fs = require('fs');
 const timestamp = new Date();
+const url = require('url')
 
 //Start a server
 var server = net.createServer((socket, res) => {
@@ -14,12 +15,25 @@ var server = net.createServer((socket, res) => {
 
     socket.write(response);
 
-    var url = './index.html';
+    if ('./index.html') {
+      fs.readFile('./index.html', 'utf8', (err, data) => {
+        if (err) throw err;
+        console.log(data);
+      });
+    }
+    else if (filePath === './hydrogen.html') {
+      fs.readFile('./hydrogen.html', 'utf8', (err, data) => {
+        if (err) throw err;
+        console.log(data);
+      });
+    }
+    else if (filePath === './helium.html') {
+      fs.readFile('./hydrogen.html', 'utf8', (err, data) => {
+        if (err) throw err;
+        console.log(data);
+      });
+    }
 
-    fs.readFile(url, 'utf8', (err, data) => {
-      if (err) throw err;
-      console.log(data);
-    });
     socket.end('data', () => {
     console.log('Connection closed');
     });
