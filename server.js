@@ -17,6 +17,10 @@ var server = net.createServer((socket) => {
 
 
     staticContent.index_html;
+    staticContent.helium_html;
+    staticContent.hydrogen_html;
+    staticContent.error_html;
+
     //HTTP Response back
 
       fs.readFile('./index.html', 'utf8', (err, data) => {
