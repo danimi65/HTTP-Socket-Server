@@ -1,10 +1,7 @@
 const net = require('net');
-const fs = require('fs');
 const timestamp = new Date();
-const url = require('url');
-// const staticContent = require('./staticContent');
+const staticContent = require('./staticContent');
 
-//Start a server
 var server = net.createServer((socket) => {
 
   socket.setEncoding('utf8');
@@ -13,37 +10,27 @@ var server = net.createServer((socket) => {
     var response = `Status Code:\n
     Date: ${timestamp}\n
     Server: My Custom Server\n`;
-    // console.log(chunk);
     socket.write(response);
 
+    var string = chunk;
+    var split = string.split(" ");
 
-  //   staticContent.index_html;
-  //   staticContent.helium_html;
-  //   staticContent.hydrogen_html;
-  //   staticContent.error_html;
-
-  //   //HTTP Response back
-
-  //     fs.readFile('./index.html', 'utf8', (err, data) => {
-  //       if (err) throw err;
-  //       console.log(data);
-  //     });
-
-  //     fs.readFile('./hydrogen.html', 'utf8', (err, data) => {
-  //       if (err) throw err;
-  //       console.log(data);
-  //     });
-
-  //     fs.readFile('./helium.html', 'utf8', (err, data) => {
-  //       if (err) throw err;
-  //       console.log(data);
-  //     });
-
-  //   socket.end('data', () => {
-  //   console.log('Connection closed');
-  //   });
+    if (split[1] === "/"){
+      process.stdout.write(staticContent.index_html);
+    }
+    else if (split[1] === "/index.html") {
+      process.stdout.write(staticContent.index_html);
+    }
+    else if (split[1] === "/hydrogen.html") {
+      console.log(staticContent.hydrogen_html);
+    }
+    else if (split[1] === "/helium.html") {
+      console.log(staticContent.helium_html);
+    }
+    else if (split[1] === "/404.html") {
+      console.log(staticContent.error_html);
+    }
   });
-
 });
 
 server.listen(8080, 'localhost', () => {
