@@ -7,28 +7,43 @@ var server = net.createServer((socket) => {
   socket.setEncoding('utf8');
 
   socket.on('data', (chunk) => {
-    var response = `Status Code:\n
-    Date: ${timestamp}\n
-    Server: My Custom Server\n`;
-    socket.write(response);
 
     var string = chunk;
     var split = string.split(" ");
 
-    if (split[1] === "/"){
-      process.stdout.write(staticContent.index_html);
+    var response = `\nHTTP/1.1 200 OK
+    \nServer: nginx/1.4.6 (Ubuntu)
+    \nDate: ${timestamp}
+    \nContent-Type: text/html; charset=utf-8
+    \nContent-Length: 40489
+    \nConnection: keep-alive\n`;
+
+    if(split[0] === "HEAD") {
+      console.log('split0', split[0]);
+      process.stdout.write(response);
     }
-    else if (split[1] === "/index.html") {
-      process.stdout.write(staticContent.index_html);
-    }
-    else if (split[1] === "/hydrogen.html") {
-      console.log(staticContent.hydrogen_html);
-    }
-    else if (split[1] === "/helium.html") {
-      console.log(staticContent.helium_html);
-    }
-    else if (split[1] === "/404.html") {
-      console.log(staticContent.error_html);
+    else if(split[0] === "GET") {
+      if (split[1] === "/"){
+        process.stdout.write(staticContent.index_html);
+      }
+      else if (split[1] === "/index.html") {
+        process.stdout.write(staticContent.index_html);
+      }
+      else if (split[1] === "/hydrogen.html") {
+        process.stdout.write(staticContent.hydrogen_html);
+      }
+      else if (split[1] === "/helium.html") {
+        process.stdout.write(staticContent.helium_html);
+      }
+      else if (split[1] === "/404.html") {
+        process.stdout.write(staticContent.error_html);
+      }
+      else if (split[1] === "/css/styles.css") {
+        process.stdout.write(staticContent.styles_css);
+      }
+      else {
+        process.stdout.write(staticContent.error_html);
+      }
     }
   });
 });
