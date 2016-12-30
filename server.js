@@ -1,48 +1,51 @@
 const net = require('net');
-// const fs = require('fs');
 const timestamp = new Date();
-const url = require('url');
-// const staticContent = require('./staticContent');
+const staticContent = require('./staticContent');
 
-//Start a server
 var server = net.createServer((socket) => {
 
   socket.setEncoding('utf8');
+
   socket.on('data', (chunk) => {
-    var response = `Status Code:\n
-    Date: ${timestamp}\n
-    Server: My Custom Server\n`;
-    // console.log(chunk);
-    socket.write(response);
 
+    var string = chunk;
+    var split = string.split(" ");
 
-    // staticContent.index_html;
-    // staticContent.helium_html;
-    // staticContent.hydrogen_html;
-    // staticContent.error_html;
+    var response = `\nHTTP/1.1 200 OK
+    \nServer: nginx/1.4.6 (Ubuntu)
+    \nDate: ${timestamp}
+    \nContent-Type: text/html; charset=utf-8
+    \nContent-Length: 40489
+    \nConnection: keep-alive\n`;
 
-    // //HTTP Response back
-
-    //   fs.readFile('./index.html', 'utf8', (err, data) => {
-    //     if (err) throw err;
-    //     console.log(data);
-    //   });
-
-    //   fs.readFile('./hydrogen.html', 'utf8', (err, data) => {
-    //     if (err) throw err;
-    //     console.log(data);
-    //   });
-
-    //   fs.readFile('./helium.html', 'utf8', (err, data) => {
-    //     if (err) throw err;
-    //     console.log(data);
-    //   });
-
-    socket.end('data', () => {
-    console.log('Connection closed');
-    });
+    if(split[0] === "HEAD") {
+      console.log('split0', split[0]);
+      process.stdout.write(response);
+    }
+    else if(split[0] === "GET") {
+      if (split[1] === "/") {
+        process.stdout.write(response + staticContent.index_html);
+      }
+      else if (split[1] === "/index.html") {
+        process.stdout.write(staticContent.index_html);
+      }
+      else if (split[1] === "/hydrogen.html") {
+        process.stdout.write(staticContent.hydrogen_html);
+      }
+      else if (split[1] === "/helium.html") {
+        process.stdout.write(staticContent.helium_html);
+      }
+      else if (split[1] === "/404.html") {
+        process.stdout.write(staticContent.error_html);
+      }
+      else if (split[1] === "/css/styles.css") {
+        process.stdout.write(staticContent.styles_css);
+      }
+      else {
+        process.stdout.write(staticContent.error_html);
+      }
+    }
   });
-
 });
 
 server.listen(8080, 'localhost', () => {
