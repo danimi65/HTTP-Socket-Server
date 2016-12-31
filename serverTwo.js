@@ -13,8 +13,7 @@ var server = net.createServer((clientSocket) => {
 
 clientSocket.on('data', (httpRequest) => {
   var split = httpRequest.split('\r\n');
-  // console.log('split', split);
-  // console.log(split[0]);
+
 
   //parse the client's http request headers 
   var requestLine = split[0];
@@ -62,14 +61,6 @@ Content-Length: ${contentLength}\n\n`;
     }
   }
 
-
-  
-
-
-
-  // console.log(requestURI);
-
-  // console.log(httpRequest);
 });
 
 });
