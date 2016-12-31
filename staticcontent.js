@@ -1,5 +1,4 @@
-module.exports.index_html = `
-<html lang="en">
+module.exports.index_html = `<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>The Elements</title>
@@ -20,8 +19,7 @@ module.exports.index_html = `
 </body>
 </html>`;
 
-module.exports.helium_html = `
-<html lang="en">
+module.exports.helium_html = `<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>The Elements - Helium</title>
@@ -36,8 +34,7 @@ module.exports.helium_html = `
 </body>
 </html>`;
 
-module.exports.hydrogen_html = `
-<html lang="en">
+module.exports.hydrogen_html = `<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>The Elements - Hydrogen</title>
@@ -52,8 +49,7 @@ module.exports.hydrogen_html = `
 </body>
 </html>`
 
-module.exports.error_html = `
-<html lang="en">
+module.exports.error_html = `<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Element not found!</title>

@@ -1,19 +1,19 @@
-// const net = require('net');
+const net = require('net');
 
-// // v--------socket connection to server
+// v--------socket connection to server
 
-// var server = net.createConnection(8080, 'localhost',() => {
-//   console.log('Connected');
-// });
+var client = net.createConnection(8080, 'localhost',() => {
+  console.log('Connected');
+});
 
-// server.on('connect', () => {
-//   process.stdin.pipe(server);
+client.on('connect', () => {
+  process.argv.pipe(client);
+});
 
-//   // server.on('data', (request) => {
-//   //   process.stdout.write(request);
-//   // });
+client.on('data', (request) => {
+  process.argv.write(request);
+});
 
-//   server.end('data', () => {
-//     console.log('Connection closed');
-//   });
-// });
+client.end('data', () => {
+  console.log('Connection closed');
+});
