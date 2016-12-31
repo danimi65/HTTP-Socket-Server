@@ -1,6 +1,7 @@
 const net = require('net'); //need to require net module to be able to use all the functions within it
 
 const staticContent = require('./staticcontent.js');
+const timeStamp = new Date();
 
 
 
@@ -21,12 +22,12 @@ clientSocket.on('data', (httpRequest) => {
   var requestMethod = requestLineSplit[0];
   var requestURI = requestLineSplit[1];
 
-  function generateResponseHeaders(contentLength){
+  function generateResponseHeaders(statusCode,contentLength, contentType){
 
-  var responseHeaders =`HTTP/1.1 200 OK 
+  var responseHeaders =`HTTP/1.1 ${statusCode} 
 Server: nginx/1.4.6 (Ubuntu)
-Date: Wed, 08 Jul 2015 22:31:15 GMT
-Content-Type: text/html; charset=utf-8
+Date: ${timeStamp}
+Content-Type: ${contentType}
 Content-Length: ${contentLength}\n\n`;
   
   return responseHeaders;
@@ -38,22 +39,25 @@ Content-Length: ${contentLength}\n\n`;
 
   if(requestMethod === 'GET'){
     if(requestURI === '/'){
-      clientSocket.write(generateResponseHeaders(staticContent.index_html.length) + staticContent.index_html);
+      clientSocket.write(generateResponseHeaders('200 OK', staticContent.index_html.length, 'text/html; charset=utf-8') + staticContent.index_html);
       clientSocket.end();
     }else if (requestURI == '/index.html'){
-      clientSocket.write(generateResponseHeaders(staticContent.index_html.length) + staticContent.index_html);
+      clientSocket.write(generateResponseHeaders('200 OK', staticContent.index_html.length, 'text/html; charset=utf-8') + staticContent.index_html);
       clientSocket.end();
     }else if(requestURI === '/hydrogen.html'){
-      clientSocket.write(generateResponseHeaders(staticContent.hydrogen_html.length) + staticContent.hydrogen_html);
+      clientSocket.write(generateResponseHeaders('200 OK', staticContent.hydrogen_html.length, 'text/html; charset=utf-8') + staticContent.hydrogen_html);
       clientSocket.end();
     }else if(requestURI === '/helium.html'){
-      clientSocket.write(generateResponseHeaders(staticContent.helium_html.length) + staticContent.helium_html);
+      clientSocket.write(generateResponseHeaders('200 OK', staticContent.helium_html.length, 'text/html; charset=utf-8') + staticContent.helium_html);
       clientSocket.end();
-    }else if(requestURI === '/404.html'){
-      clientSocket.write(generateResponseHeaders(staticContent.error_html.length) + staticContent.error_html);
-      clientSocket.end();
+    // }else if(requestURI === '/404.html'){
+    //   clientSocket.write(generateResponseHeaders(staticContent.error_html.length) + staticContent.error_html);
+    //   clientSocket.end();
     }else if(requestURI === '/css/styles.css'){
-      clientSocket.write(generateResponseHeaders(staticContent.styles_css.length) + staticContent.styles_css);
+      clientSocket.write(generateResponseHeaders('200 OK', staticContent.styles_css.length, 'text/css; charset=utf-8') + staticContent.styles_css);
+      clientSocket.end();
+    }else{
+      clientSocket.write(generateResponseHeaders('404 NOT FOUND',staticContent.error_html.length, 'text/html; charset=utf-8') + staticContent.error_html);
       clientSocket.end();
     }
   }
